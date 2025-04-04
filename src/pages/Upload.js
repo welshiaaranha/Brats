@@ -1,31 +1,48 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import "../styles.css";
 
 function Upload() {
-    const [result, setResult] = useState("");
-    const [showDropdown, setShowDropdown] = useState(false);
     const [fileName, setFileName] = useState("No file chosen");
+    const [selectedFile, setSelectedFile] = useState(null);
+    const [showDropdown, setShowDropdown] = useState(false);
+    const navigate = useNavigate();
 
     const handleFileChange = (e) => {
         const file = e.target.files[0];
         setFileName(file ? file.name : "No file chosen");
+        setSelectedFile(file);
     };
 
     const handleUpload = async (event) => {
         event.preventDefault();
-        const file = event.target.mriFile.files[0];
+        
+        if (!selectedFile) {
+            alert("Please select a file before uploading!");
+            return;
+        }
+
         const formData = new FormData();
-        formData.append("file", file);
+        formData.append("file", selectedFile);
 
         try {
-            const response = await fetch("/predict", {
+            const response = await fetch("https://l2-c-three.vercel.app/upload", {
                 method: "POST",
-                body: formData
+                body: formData,
             });
-            const data = await response.json();
-            setResult(data.result);
+
+            if (!response.ok) {
+                throw new Error("File upload failed");
+            }
+
+            const result = await response.json();
+            console.log("File uploaded successfully:", result);
+
+            // Redirect to Output.js after successful upload
+            navigate("/output", { state: { uploadResult: result } });
         } catch (error) {
-            console.error("Error:", error);
+            console.error("Error uploading file:", error);
+            alert("Upload failed. Please try again.");
         }
     };
 
@@ -67,7 +84,7 @@ function Upload() {
                                 <input 
                                     type="file" 
                                     id="mriFile" 
-                                    name="file" 
+                                    name="mriFile" 
                                     accept="image/*" 
                                     onChange={handleFileChange}
                                     hidden
@@ -80,8 +97,6 @@ function Upload() {
                         )}
                     </form>
                 </div>
-                {result && <div className="result-container"><h3>{result}</h3></div>}
-                <p className="report-history-text">Check your past report history</p>
             </div>
         </div>
     );
