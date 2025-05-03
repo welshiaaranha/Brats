@@ -1,0 +1,7 @@
+{
+    "patient": "S2010_output.nii",
+    "tumor_volume_cubic_mm": 2448157277.4618196,
+    "tumor_growth_rate": 0.0,
+    "notes": "Tumor volume calculated as voxel count times voxel volume. Growth rate is a placeholder for multi-timepoint analysis.",
+    "usage": "Use this report for clinical reference and further analysis."
+}

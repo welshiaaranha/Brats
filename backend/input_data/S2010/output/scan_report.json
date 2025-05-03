@@ -1,0 +1,7 @@
+{
+  "patient_id": "scan",
+  "tumor_volume_mm3": 1543.9210405615895,
+  "growth_rate": 0.0,
+  "timestamp": "2025-04-26T15:35:05.140493",
+  "diagnosis": "Brain tumor detected"
+}
