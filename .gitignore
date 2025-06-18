@@ -23,3 +23,5 @@ yarn-debug.log*
 yarn-error.log*
 /input_data/
 /models/
+/backend/unet3d_best.pth
+/backend/unet3d_converted.pth
